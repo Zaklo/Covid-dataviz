@@ -5,7 +5,10 @@ int density = 0; // number of dots in sphere surface
 int R;
 int j = 0;
 color[] colors = {color(201,35,35),color(50,209,74),color(255)};
-
+int alphaValue = 0;
+PFont zona;
+zona = loadFont("zonaRegular.ttf");
+String[] names = {"Actives.", "Recovered.", "Deaths."};
 
 void mousePressed() {
     if(j < 2) j++;
@@ -16,19 +19,21 @@ void mousePressed() {
 
 void setup() {
 
+  
+  
   String url = "https://coronavirus-19-api.herokuapp.com/all";
   JSONObject json = loadJSONObject(url);
   int recovered = json.getInt("recovered");
   int deaths = json.getInt("deaths");
   int cases = json.getInt("cases");
   int active = cases - (recovered + deaths);
-  
+ 
   int[] tab = {active, recovered, deaths};
-  
   density = tab[j]/100;
-    
+   
   size(1920, 1080, P3D);
   background(0);
+  
   // rate of looping through draw 
   frameRate(30);
   // Radius of sphere
@@ -48,12 +53,18 @@ void setup() {
     }  
 }
 
-
-
 void draw() {
      background(0);
      lights();
      
+      textSize(25);
+      fill(255, alphaValue);
+      textFont(zona);
+      text(names[j], -height/2, -270);
+      if (alphaValue < 255) {
+        alphaValue = alphaValue + 10;
+      }
+      System.out.println(mouseX);
      camera(0, 0, height/2, 0, 0, -x*60, 0, 1, 0);
      //camera(0, 0, 600-x*60, 0, 0, -x*60, 0, 1, 0);
       
